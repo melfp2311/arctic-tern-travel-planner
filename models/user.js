@@ -36,23 +36,33 @@ const UserSchema = new Schema({
     ]
 });
 
-UserSchema.methods = {
-    checkPassword: function (inputPassword) {
-        return bcrypt.compareSync(inputPassword, this.password);
-      },
-      hashPassword: (plainTextPassword) => {
-        return bcrypt.hashSync(plainTextPassword, 6);
-      },
-}
+/*UserSchema.prototype.validPassword = function(password) {
+    return bcrypt.compareSync(password, this.password);
+};
+  // Hooks are automatic methods that run during various phases of the User Model lifecycle
+  // In this case, before a User is created, we will automatically hash their password
+UserSchema.addHook("beforeCreate", function(user) {
+user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(10), null);
+});*/
 
+UserSchema.methods = {
+    validPassword: function (inputPassword) {
+      return bcrypt.compareSync(inputPassword, this.password);
+    },
+    hashPassword: (plainTextPassword) => {
+      return bcrypt.hashSync(plainTextPassword, 10);
+    },
+};
+  
+// Define hooks for pre-saving
 UserSchema.pre("save", function (next) {
-    if (!this.password) {
-      next();
-    } else {
-      this.password = this.hashPassword(this.password);
-      next();
-    }
-  });
+if (!this.password) {
+    next();
+} else {
+    this.password = this.hashPassword(this.password);
+    next();
+}
+});
 
 const User = mongoose.model("User", UserSchema);
 
