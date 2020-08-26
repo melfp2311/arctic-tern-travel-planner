@@ -1,9 +1,9 @@
 import React from 'react';
 import './App.css';
-import HelloBootstrap from "./components/HelloBootstrap";
+import HelloBootstrap from "./components/Navbar";
 
 function App() {
-  return <HelloBootstrap />;
+  return <Navbar />;
 }
 
 export default App;
