@@ -20,13 +20,16 @@ module.exports = {
         .then(dbModel => res.json(dbModel))
         .catch(err => res.status(422).json(err));*/
     },
-    getUser: function(req, res) {
+    loggedUser: function(req, res) {
         if (!req.user) {
             res.json({})
         } else {
-            res.json({
-                email: req.user.email,
-                _id: req.user.id
+            db.User.findOne({
+                _id: req.params.id
+            })
+            .populate('trips')
+            .then(user => {
+                res.json(user);
             })
         }
         /*db.User
