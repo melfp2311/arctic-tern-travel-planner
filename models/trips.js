@@ -24,9 +24,10 @@ const TripSchema = new Schema({
         unique: false,
         trim: true
     },
-    day: {
-        type: Date,
-        default: Date.now()
+    date: {
+        type: String,
+        required: true,
+        trim: true
     },
     category: {
         type: String,
@@ -34,6 +35,9 @@ const TripSchema = new Schema({
     },
     budget: {
         type: Number
+    },
+    userId: {
+        type: String
     }
 });
 
